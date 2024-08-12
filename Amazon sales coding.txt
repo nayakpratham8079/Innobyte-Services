@@ -1,0 +1,75 @@
+
+--CODE FOR SALES DATA
+SELECT 
+    DATE_TRUNC('month', order_date) AS month,
+    SUM(amount) AS total_sales,
+    COUNT(order_id) AS total_orders
+FROM 
+    sales_data
+GROUP BY 
+    month
+ORDER BY 
+    month;
+
+
+
+--PRODUCT ANALYSIS
+SELECT 
+    product_category,
+    product_size,
+    SUM(quantity) AS total_quantity_sold,
+    SUM(amount) AS total_revenue
+FROM 
+    sales_data
+GROUP BY 
+    product_category, product_size
+ORDER BY 
+    total_quantity_sold DESC;
+
+
+
+--FULLFILLMENT ANALYSIS
+SELECT 
+    fulfillment_method,
+    COUNT(order_id) AS total_orders,
+    AVG(DATE_PART('day', delivery_date - order_date)) AS avg_delivery_time,
+    SUM(amount) AS total_sales
+FROM 
+    sales_data
+GROUP BY 
+    fulfillment_method
+ORDER BY 
+    total_orders DESC;
+
+
+
+
+--CUSTOMER SEGMENTATIONSELECT 
+    customer_id,
+    customer_location,
+    COUNT(order_id) AS total_orders,
+    SUM(amount) AS total_spent
+FROM 
+    sales_data
+GROUP BY 
+    customer_id, customer_location
+HAVING 
+    SUM(amount) > 1000  -- Example threshold for high-value customers
+ORDER BY 
+    total_spent DESC;
+ 
+
+--GEOGRAPHICAL ANALYSIS
+SELECT 
+    customer_state,
+    customer_city,
+    SUM(amount) AS total_sales,
+    COUNT(order_id) AS total_orders
+FROM 
+    sales_data
+GROUP BY 
+    customer_state, customer_city
+ORDER BY 
+    total_sales DESC;
+
+
